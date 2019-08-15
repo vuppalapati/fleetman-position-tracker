@@ -35,6 +35,12 @@
               to_port: 8080
               cidr_ip: 0.0.0.0/0
 
+    - name: Ensure botocore and boto3 modules are installed
+      pip:
+        name: ["boto3","botocore"]
+        extra_args: "--user"
+      become: yes
+      
     - name: Start up an EC2 Temporary Instance
       ec2:
         key_name: vijaysmu-keypair
