@@ -1,5 +1,5 @@
 - hosts: localhost
-
+   
   vars:
      region: us-west-1
      instance_type: t2.micro
@@ -12,9 +12,9 @@
         name: "*"
         update_cache: yes
     
-    - name: Set the python interpreter to the symlink (which points at version 2.7)
+    - name: Set the python interpreter to the symlink (which points at version 3)
       set_fact:
-        ansible_python_interpreter: '/usr/bin/python'
+        ansible_python_interpreter: '/usr/bin/python3'
         
     - name: Create a suitable set of firewall rules
       ec2_group:
