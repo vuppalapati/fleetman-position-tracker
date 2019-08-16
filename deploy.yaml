@@ -1,5 +1,3 @@
-# Test script for integration of Jenkins and Ansible
-
 - hosts: localhost
 
   vars:
@@ -9,10 +7,6 @@
      number_of_instances_to_create: 1
 
   tasks:
-
-    - name: Setup variables for later use
-      set_fact:
-         region: "{{ region }}"
 
     - name: Create a suitable set of firewall rules
       ec2_group:
@@ -34,8 +28,9 @@
               from_port: 8080
               to_port: 8080
               cidr_ip: 0.0.0.0/0
-     
-    - name: Start up an EC2 Temporary Instance
+
+
+    - name: Start up an EC2 Instance
       ec2:
         key_name: vijaysmu-keypair
         group: jenkins_server_security_groups
@@ -64,6 +59,15 @@
 - hosts: new_ec2_instances, tag_Name_Dummy_Test
 
   tasks:
+
+    - name: A dummy task to see if dynamic inventory is being found
+      debug: msg="Yes, found the inventory"
+
+    - name: Ensure Apache is NOT on this server.
+      yum: name=httpd state=absent
+      become: yes
+
+    tasks:
 
     - name: Hello World, is this Working?
       debug: msg="Hello? Is this working?"
