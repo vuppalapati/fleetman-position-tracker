@@ -34,12 +34,7 @@
               from_port: 8080
               to_port: 8080
               cidr_ip: 0.0.0.0/0
-
-    - name: Boto3
-      pip:
-         name: boto3
-      become: yes
-      
+     
     - name: Start up an EC2 Temporary Instance
       ec2:
         key_name: vijaysmu-keypair
