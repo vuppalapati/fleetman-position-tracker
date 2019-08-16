@@ -1,5 +1,7 @@
+# Test script for integration of Jenkins and Ansible
+
 - hosts: localhost
-   
+
   vars:
      region: us-west-1
      instance_type: t2.micro
@@ -7,15 +9,11 @@
      number_of_instances_to_create: 1
 
   tasks:
-    - name: Update the software package repository
-      yum:
-        name: "*"
-        update_cache: yes
-    
-    - name: Set the python interpreter to the symlink (which points at version 2)
+
+    - name: Setup variables for later use
       set_fact:
-        ansible_python_interpreter: '/usr/bin/python2'
-        
+         region: "{{ region }}"
+
     - name: Create a suitable set of firewall rules
       ec2_group:
          name: jenkins_server_security_groups
@@ -37,8 +35,7 @@
               to_port: 8080
               cidr_ip: 0.0.0.0/0
 
-
-    - name: Start up an EC2 Instance
+    - name: Start up an EC2 Temporary Instance
       ec2:
         key_name: vijaysmu-keypair
         group: jenkins_server_security_groups
@@ -65,15 +62,6 @@
       with_items: "{{ ec2.instances }}"
 
 - hosts: new_ec2_instances, tag_Name_Dummy_Test
-
-  tasks:
-
-    - name: A dummy task to see if dynamic inventory is being found
-      debug: msg="Yes, found the inventory"
-
-    - name: Ensure Apache is NOT on this server.
-      yum: name=httpd state=absent
-      become: yes
 
   tasks:
 
