@@ -67,7 +67,7 @@
       yum: name=httpd state=absent
       become: yes
 
-    tasks:
+  tasks:
 
     - name: Hello World, is this Working?
       debug: msg="Hello? Is this working?"
