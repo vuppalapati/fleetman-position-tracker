@@ -12,9 +12,9 @@
         name: "*"
         update_cache: yes
     
-    - name: Set the python interpreter to the symlink (which points at version 3)
+    - name: Set the python interpreter to the symlink (which points at version 2)
       set_fact:
-        ansible_python_interpreter: '/usr/bin/python3'
+        ansible_python_interpreter: '/usr/bin/python2'
         
     - name: Create a suitable set of firewall rules
       ec2_group:
