@@ -77,11 +77,6 @@
     - name: Hello World, is this Working?
       debug: msg="Hello? Is this working?"
     
-    - name:           Ensure botocore and boto3 modules are installed
-      pip:
-        name:         [ "boto", "botocore"]
-        extra_args:   "--user"
-    
 - hosts: localhost
 
   vars:
