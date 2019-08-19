@@ -47,17 +47,16 @@
       when: python3_installed.stdout is not defined
 
     - name: install the latest version of python-boto
-        become: yes
-        yum:
+      yum:
           name: python-boto
           state: latest
+      become: yes
       
     - name: install the latest version of python-boto3
-      become: yes
       yum:
         name: python-boto3
         state: latest
-
+      become: yes
       
     - name: Setup variables for later use
       set_fact:
