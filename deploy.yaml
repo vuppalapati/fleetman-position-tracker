@@ -14,7 +14,12 @@
       set_fact:
          region: "{{ region }}"
 
-    - name: Create a suitable set of firewall rules
+   - name: Install requirements
+      pip:
+        virtualenv: /user/home/venvs/myenv
+        virtualenv_python: python3.7  
+        
+   - name: Create a suitable set of firewall rules
       ec2_group:
          name: jenkins2_server_security_groups
          description: Specific rules for a Jenkins Instance
@@ -34,9 +39,6 @@
               from_port: 8080
               to_port: 8080
               cidr_ip: 0.0.0.0/0
-              
-    - name: Manually create the initial virtualenv
-      command: virtualenv /user/home/venvs/myenv -p python3.7 creates="/user/home/venvs/myenv"           
 
     - name: Start up an EC2 Temporary Instance
       ec2:
