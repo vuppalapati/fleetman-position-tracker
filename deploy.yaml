@@ -46,9 +46,13 @@
       become: yes
       when: python3_installed.stdout is not defined
 
-    - name: Install boto3 using pip3 for root user
-      command: pip3 install boto3
-      become: yes
+    - name: Ensure boto and boto3 modules are installed
+      pip:
+        name: "{{ item }}"
+      with_items:
+        - boto3
+        - botocore
+      delegate_to: "{{ item.public_ip }}"
       
     - name: Setup variables for later use
       set_fact:
