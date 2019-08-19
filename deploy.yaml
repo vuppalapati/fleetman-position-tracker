@@ -9,10 +9,12 @@
      number_of_instances_to_create: 1
 
   tasks:
-
+   - name: upgrade all packages
+     yum: name=* state=latest
+   
    - name: Setup variables for later use
       set_fact:
-         region: "{{ region }}"
+        region: "{{ region }}"
 
    - name: Install requirements
       pip:
