@@ -7,11 +7,25 @@
      instance_type: t2.micro
      base_image_name: ami-056ee704806822732
      number_of_instances_to_create: 1
+     python_version: '3.7.4'
 
   tasks:
 
     - name: upgrade all packages
       yum: name=* state=latest
+    
+    - name: Check if python is already latest
+      command: python3 --version
+      register: python_version_result
+      failed_when: "{{ python_version_result.stdout | replace('Python ', '') | version_compare(python_version, '>=') }}"
+
+    - name: Install prerequisites
+      yum: name=python-software-properties state=present
+      become: true
+
+    - name: Install python
+      apt: name="python{{ python_version }}-dev" state=present
+      become: true
      
     - name: Setup variables for later use
       set_fact:
