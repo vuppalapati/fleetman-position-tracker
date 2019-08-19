@@ -46,10 +46,18 @@
       become: yes
       when: python3_installed.stdout is not defined
 
-    - name: install the boto package, force upgrade
-      pip: 
-        name: boto3
-      become: true
+    - name: install the latest version of python-boto
+        become: yes
+        yum:
+          name: python-boto
+          state: latest
+      
+    - name: install the latest version of python-boto3
+      become: yes
+      yum:
+        name: python-boto3
+        state: latest
+
       
     - name: Setup variables for later use
       set_fact:
