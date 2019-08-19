@@ -10,7 +10,7 @@
 
   tasks:
 
-    - name: Setup variables for later use
+   - name: Setup variables for later use
       set_fact:
          region: "{{ region }}"
 
