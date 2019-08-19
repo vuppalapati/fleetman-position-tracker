@@ -87,11 +87,6 @@
     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-   - name:           Ensure botocore and boto3 modules are installed
-      pip:
-        name:         [ "boto", "botocore"]
-        extra_args:   "--user"
-
     - name: All working so destroy the temporary instance
       ec2:
         key_name: vijaysmu-keypair
