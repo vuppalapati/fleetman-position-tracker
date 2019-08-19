@@ -9,7 +9,6 @@
      base_image_name: ami-056ee704806822732
      number_of_instances_to_create: 1
      python_version: '3.7.4'
-     ansible_python_interpreter: /usr/src/Python-{{ python_version }}
 
   tasks:
     - name: Create a suitable set of firewall rules
@@ -62,7 +61,7 @@
       with_items: "{{ ec2.instances }}"
 
 - hosts: new_ec2_instances, tag_Name_Dummy_Test
-
+  
   tasks:
 
     - name: upgrade all packages
@@ -103,7 +102,10 @@
         target: altinstall
       become: yes
       when: python3_installed.stdout is not defined
-
+    
+    - name: set ansible_python_interpreter
+      set_fact: ansible_python_interpreter="/usr/bin/python3"
+      
     - name: install the latest version of python-boto
       yum:
           name: python-boto
