@@ -4,19 +4,16 @@
 
   vars:
      region: us-west-1
+     jenkins_security_group_name: Jenkins-Server-sg
      instance_type: t2.micro
      base_image_name: ami-056ee704806822732
      number_of_instances_to_create: 1
      python_version: '3.7.4'
 
   tasks:
-    - name: Setup variables for later use
-      set_fact:
-         region: "{{ region }}"
-
     - name: Create a suitable set of firewall rules
       ec2_group:
-         name: jenkins2_server_security_groups
+         name: "{{ jenkins_security_group_name }}"
          description: Specific rules for a Jenkins Instance
          region: "{{ region }}"
          rules_egress:
@@ -38,7 +35,7 @@
     - name: Start up an EC2 Temporary Instance
       ec2:
         key_name: vijaysmu-keypair
-        group: jenkins2_server_security_groups
+        group: "{{ jenkins_security_group_name }}"
         instance_type: "{{ instance_type }}"
         image: "{{ base_image_name }}"
         wait: yes
@@ -51,7 +48,9 @@
       register: ec2
 
     - name: Gather the new ip addresses
-      add_host: groups=new_ec2_instances hostname="{{ item.public_ip }}"
+      add_host: 
+        groups=new_ec2_instances 
+        hostname="{{ item.public_ip }}"
       with_items: "{{ ec2.instances }}"
 
     - name: Wait for SSH Server to start responding
@@ -65,15 +64,13 @@
 
   tasks:
 
-    - name: Hello World, is this Working?
-      debug: msg="Hello? Is this working?"
-
-    - name: Patch up the server - this will test if we can SSH
-      yum: name=* state=latest
-      become: yes
-      
     - name: upgrade all packages
       yum: name=* state=latest
+
+- hosts: localhost   
+
+    - name: Hello World, is this Working?
+      debug: msg="Hello? Is this working?"
     
     - name: Check if Python3 is installed
       command: python3 -V
@@ -119,8 +116,6 @@
         state: latest
       become: yes  
 
-
-- hosts: localhost
 
   tasks:
 
