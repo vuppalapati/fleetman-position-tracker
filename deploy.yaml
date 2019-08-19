@@ -12,6 +12,11 @@
      ansible_python_interpreter: /usr/bin/python3
 
   tasks:
+    - name:           Ensure botocore and boto3 modules are installed
+      pip:
+        name:         [ "boto3", "botocore"]
+        extra_args:   "--user"
+
     - name: Create a suitable set of firewall rules
       ec2_group:
          name: "{{ jenkins_security_group_name }}"
