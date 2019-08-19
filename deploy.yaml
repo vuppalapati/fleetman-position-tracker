@@ -66,8 +66,7 @@
 
     - name: upgrade all packages
       yum: name=* state=latest
-
-- hosts: localhost   
+      become: yes
 
     - name: Hello World, is this Working?
       debug: msg="Hello? Is this working?"
