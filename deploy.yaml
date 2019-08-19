@@ -46,18 +46,10 @@
       become: yes
       when: python3_installed.stdout is not defined
 
-    - name: Install boto using pip3 for root user
-      become: yes
-      command: pip3 install --upgrade boto
-      tags:
-        - pip
-
     - name: Install boto3 using pip3 for root user
+      command: pip3 install boto3
       become: yes
-      command: pip3 install --upgrade boto3
-      tags:
-        - pip
-        
+      
     - name: Setup variables for later use
       set_fact:
          region: "{{ region }}"
