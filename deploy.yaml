@@ -46,13 +46,10 @@
       become: yes
       when: python3_installed.stdout is not defined
 
-    - name: Ensure boto and boto3 modules are installed
-      pip:
-        name: "{{ item }}"
-      with_items:
-        - boto3
-        - botocore
-      delegate_to: "{{ item.public_ip }}"
+    - name: install the boto package, force upgrade
+      pip: 
+        name: boto3
+      become: true
       
     - name: Setup variables for later use
       set_fact:
