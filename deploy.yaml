@@ -9,19 +9,15 @@
      number_of_instances_to_create: 1
 
   tasks:
-   - name: upgrade all packages
-     yum: name=* state=latest
-   
-   - name: Setup variables for later use
-      set_fact:
-        region: "{{ region }}"
 
-   - name: Install requirements
-      pip:
-        virtualenv: /user/home/venvs/myenv
-        virtualenv_python: python3.7  
-        
-   - name: Create a suitable set of firewall rules
+    - name: upgrade all packages
+      yum: name=* state=latest
+     
+    - name: Setup variables for later use
+      set_fact:
+         region: "{{ region }}"
+
+    - name: Create a suitable set of firewall rules
       ec2_group:
          name: jenkins2_server_security_groups
          description: Specific rules for a Jenkins Instance
