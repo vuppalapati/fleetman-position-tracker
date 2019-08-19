@@ -9,7 +9,7 @@
      base_image_name: ami-056ee704806822732
      number_of_instances_to_create: 1
      python_version: '3.7.4'
-     ansible_python_interpreter: /usr/bin/python2
+     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
     - name: Create a suitable set of firewall rules
@@ -71,7 +71,15 @@
 
     - name: Hello World, is this Working?
       debug: msg="Hello? Is this working?"
-    
+      
+    - name: Ensure boto and boto3 modules are installed
+      pip:
+        name: "{{ item }}"
+      with_items:
+        - boto3
+        - botocore
+      delegate_to: "{{ ec2_instance_ip }}"
+      
     - name: Check if Python3 is installed
       command: python3 -V
       ignore_errors: True
