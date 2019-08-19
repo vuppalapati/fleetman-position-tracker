@@ -76,69 +76,21 @@
 
     - name: Hello World, is this Working?
       debug: msg="Hello? Is this working?"
-      
-    - name: Ensure boto and boto3 modules are installed
-      pip:
-        name: "{{ item }}"
-      with_items:
-        - boto3
-        - botocore
-      delegate_to: "{{ ec2_instance_ip }}"
-      
-    - name: Check if Python3 is installed
-      command: python3 -V
-      ignore_errors: True
-      register: python3_installed
-      changed_when: False
-
-    - name: Print Python version
-      debug:
-        var: python3_installed.stdout
-
-    - name: Download and untar Python3 source files
-      unarchive:
-        src: 'https://www.python.org/ftp/python/{{ python_version }}/Python-{{ python_version }}.tar.xz'
-        dest: /usr/src
-        remote_src: yes
-      become: yes
-      when: python3_installed.stdout is not defined
-
-    - name: Configure Python
-      command: ./configure --enable-optimizations
-      args:
-        chdir: '/usr/src/Python-{{ python_version }}'
-      become: yes
-      when: python3_installed.stdout is not defined
-
-    - name: Install Python
-      make:
-        chdir: '/usr/src/Python-{{ python_version }}'
-        target: altinstall
-      become: yes
-      when: python3_installed.stdout is not defined
     
-    - name: set ansible_python_interpreter
-      set_fact: ansible_python_interpreter="/usr/bin/python3"
-      
-    - name: install the latest version of python-boto
-      yum:
-          name: python-boto
-          state: latest
-      become: yes
-      
-    - name: install the latest version of python-boto3
-      yum:
-        name: python-boto3
-        state: latest
-      become: yes  
+- hosts: localhost
 
+  vars:
+    region: us-west-1
+    jenkins_security_group_name: Jenkins-Server-sg
+    instance_type: t2.micro
+    base_image_name: ami-056ee704806822732
 
   tasks:
 
     - name: All working so destroy the temporary instance
       ec2:
         key_name: vijaysmu-keypair
-        group: jenkins2_server_security_groups
+        group: jenkins_security_group_name
         instance_type: notneeded
         image: notneeded
         wait: yes
