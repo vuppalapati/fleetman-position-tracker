@@ -14,18 +14,38 @@
     - name: upgrade all packages
       yum: name=* state=latest
     
-    - name: Check if python is already latest
-      command: python3 --version
-      register: python_version_result
-      failed_when: "{{ python_version_result.stdout | replace('Python ', '') | version_compare(python_version, '>=') }}"
+    - name: Check if Python3 is installed
+      command: python3 -V
+      ignore_errors: True
+      register: python3_installed
+      changed_when: False
 
-    - name: Install prerequisites
-      yum: name=python-software-properties state=present
-      become: true
+    - name: Print Python version
+      debug:
+        var: python3_installed.stdout
 
-    - name: Install python
-      apt: name="python{{ python_version }}-dev" state=present
-      become: true
+    - name: Download and untar Python3 source files
+      unarchive:
+        src: 'https://www.python.org/ftp/python/{{ python_version }}/Python-{{ python_version }}.tar.xz'
+        dest: /usr/src
+        remote_src: yes
+      become: yes
+      when: python3_installed.stdout is not defined
+
+    - name: Configure Python
+      command: ./configure --enable-optimizations
+      args:
+        chdir: '/usr/src/Python-{{ python_version }}'
+      become: yes
+      when: python3_installed.stdout is not defined
+
+    - name: Install Python
+      make:
+        chdir: '/usr/src/Python-{{ python_version }}'
+        target: altinstall
+      become: yes
+      when: python3_installed.stdout is not defined
+
      
     - name: Setup variables for later use
       set_fact:
