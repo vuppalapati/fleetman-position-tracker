@@ -11,6 +11,11 @@
      ansible_python_interpreter: /usr/bin/python3
   
   tasks:
+    - name: Setup Variables for later
+      set_fact:
+          region: "{{ region }}"
+          ansible_python_interpreter: "{{ ansible_python_interpreter }}"
+          
     - name:           Ensure botocore and boto3 modules are installed
       pip:
         name:         [ "boto3", "botocore"]
