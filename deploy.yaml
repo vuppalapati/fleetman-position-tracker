@@ -7,7 +7,6 @@
      keypair_name: vijaysmu-keypair
      instance_type: t2.micro
      image_name: ami-0859a49180a5473f2
-     ansible_python_interpreter: /usr/bin/python3
      security_group: microservice-group
   
   tasks:
