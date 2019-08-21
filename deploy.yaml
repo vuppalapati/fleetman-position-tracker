@@ -8,6 +8,7 @@
      instance_type: t2.micro
      image_name: ami-0859a49180a5473f2
      security_group: microservice-group
+     ansible_python_interpreter: /usr/bin/python3
   
   tasks:
 
