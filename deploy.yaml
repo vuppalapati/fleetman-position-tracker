@@ -15,6 +15,7 @@
     - name: Setup variables needed later
       set_fact: 
          region: "{{ region }}"
+         ansible_python_interpreter: "{{ ansible_python_interpreter }}"
 
     - name: Setup security group - port 22 can be removed in future
       ec2_group:
