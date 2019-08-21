@@ -80,7 +80,13 @@
 - hosts: localhost
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+     region: us-west-1
+     jenkins_security_group_name: Jenkins-Server-sg
+     instance_type: t2.micro
+     base_image_name: ami-056ee704806822732
+     number_of_instances_to_create: 1
+     python_version: '3.7.4'
+     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
     - name: All working so destroy the temporary instance
