@@ -79,11 +79,6 @@
      ansible_python_interpreter: /usr/bin/python3
      
   tasks:
-  - name:           Ensure botocore and boto3 modules are installed
-      pip:
-        name:         [ "boto3", "botocore"]
-        extra_args:   "--user"
-        
   - name: upgrade all packages
     yum: name=* state=latest
     become: true
@@ -133,11 +128,6 @@
      ansible_python_interpreter: /usr/bin/python3
   
   tasks:
-  - name:           Ensure botocore and boto3 modules are installed
-      pip:
-        name:         [ "boto3", "botocore"]
-        extra_args:   "--user"
-        
   - name: Gather facts about the new blue server
     ec2_remote_facts:
        filters:
