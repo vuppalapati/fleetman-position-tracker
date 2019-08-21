@@ -112,6 +112,10 @@
 
 
 - hosts: localhost
+  vars: 
+     region: us-west-1
+     ansible_python_interpreter: /usr/bin/python3
+     
   tasks:
   - name: Gather facts about the new blue server
     ec2_remote_facts:
